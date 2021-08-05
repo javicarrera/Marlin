@@ -28,7 +28,7 @@
 /**
  * Marlin release version identifier
  */
-//#define SHORT_BUILD_VERSION "bugfix-2.0.x"
+#define SHORT_BUILD_VERSION "Marlin bugfix-2.0.9.1"
 
 /**
  * Verbose version identifier which should contain a reference to the location
@@ -41,12 +41,12 @@
  * here we define this default string as the date where the latest release
  * version was tagged.
  */
-//#define STRING_DISTRIBUTION_DATE "2021-08-11"
+#define STRING_DISTRIBUTION_DATE "30/07/2021"
 
 /**
  * Defines a generic printer name to be output to the LCD after booting Marlin.
  */
-//#define MACHINE_NAME "3D Printer"
+#define MACHINE_NAME "Zafiro XY"
 
 /**
  * The SOURCE_CODE_URL is the location where users will find the Marlin Source
@@ -59,13 +59,13 @@
 /**
  * Default generic printer UUID.
  */
-//#define DEFAULT_MACHINE_UUID "cede2a2f-41a2-4748-9b12-c55c62f367ff"
+#define DEFAULT_MACHINE_UUID "c6fc83b6-2d21-4120-ba66-242c65a20191"
 
 /**
  * The WEBSITE_URL is the location where users can get more information such as
  * documentation about a specific Marlin release.
  */
-//#define WEBSITE_URL "marlinfw.org"
+#define WEBSITE_URL "marlinfw.org"
 
 /**
  * Set the vendor info the serial USB interface, if changable

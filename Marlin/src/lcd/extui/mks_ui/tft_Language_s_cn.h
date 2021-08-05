@@ -90,7 +90,7 @@
 
 #define LEVELING_PARA_CONF_TITLE_CN   "调平参数"
 #define AUTO_LEVELING_ENABLE_CN       "自动调平"
-#define BLTOUCH_LEVELING_ENABLE_CN    "启动BLTouch"
+#define BLTOUCH_LEVELING_ENABLE_CN    "启动BLtouch"
 #define PROBE_PORT_CN                 "调平探针接口"
 #define PROBE_X_OFFSET_CN             "探针X方向偏移"
 #define PROBE_Y_OFFSET_CN             "探针Y方向偏移"
@@ -265,6 +265,10 @@
 #define MORE_TEXT_CN                "更多"
 #define MORE_GCODE_CN               "G-Code"
 #define MORE_ENTER_GCODE_CN         "Enter G-Code"
+
+#define MORE_LEDSTRIP_CN            "Set LED color"
+#define MORE_LEDSTRIP_ALL_CN        "All"
+#define MORE_LEDSTRIP_HELP_CN       "Long press center to switch mode"
 
 #define ADD_TEXT_CN                 "增加"
 #define DEC_TEXT_CN                 "减少"

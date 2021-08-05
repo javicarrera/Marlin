@@ -214,7 +214,12 @@ static const char assets[][LONG_FILENAME_LENGTH] = {
   "bmp_custom4.bin",
   "bmp_custom5.bin",
   "bmp_custom6.bin",
-  "bmp_custom7.bin"
+  "bmp_custom7.bin",
+
+  #if ENABLED(NEOPIXEL_LED)
+    // NEOPIXEL
+    "bmp_rgbstrip.bin"
+  #endif
 };
 
 #if HAS_SPI_FLASH_FONT
@@ -491,19 +496,19 @@ uint32_t Pic_Info_Write(uint8_t *P_name, uint32_t P_size) {
     if (dir.open(&root, assetsPath, O_RDONLY)) {
 
       disp_assets_update();
-      disp_assets_update_progress("Erasing pics...");
+      disp_assets_update_progress("Borrando imagenes...");
       watchdog_refresh();
       spiFlashErase_PIC();
       #if HAS_SPI_FLASH_FONT
-        disp_assets_update_progress("Erasing fonts...");
+        disp_assets_update_progress("Borrando fuentes...");
         watchdog_refresh();
         spiFlashErase_FONT();
       #endif
 
-      disp_assets_update_progress("Reading files...");
+      disp_assets_update_progress("Leyendo archivos...");
       dir_t d;
       while (dir.readDir(&d, card.longFilename) > 0) {
-        // If we don't get a long name, but gets a short one, try it
+        // If we dont get a long name, but gets a short one, try it
         if (card.longFilename[0] == 0 && d.name[0] != 0)
           dosName2LongName((const char*)d.name, card.longFilename);
         if (card.longFilename[0] == 0) continue;

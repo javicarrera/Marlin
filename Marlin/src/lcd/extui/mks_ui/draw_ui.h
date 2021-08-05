@@ -47,6 +47,7 @@
 #include "draw_extrusion.h"
 #include "draw_home.h"
 #include "draw_gcode.h"
+#include "draw_ledstrip.h"
 #include "draw_more.h"
 #include "draw_move_motor.h"
 #include "draw_fan.h"
@@ -328,6 +329,7 @@ typedef enum {
   ENCODER_SETTINGS_UI,
   TOUCH_CALIBRATION_UI,
   GCODE_UI,
+  LEDSTRIP_UI,  
   MEDIA_SELECT_UI,
 } DISP_STATE;
 
@@ -540,3 +542,9 @@ void lv_screen_menu_item_onoff_update(lv_obj_t *btn, const bool curValue);
 
 #define _DIA_1(T)       (uiCfg.dialogType == DIALOG_##T)
 #define DIALOG_IS(V...) DO(DIA,||,V)
+
+#define BUTTON_X(N) ((N) * (BTN_X_PIXEL + INTERVAL_V) + INTERVAL_V)
+#define BUTTON_Y(N) ((N) * (BTN_Y_PIXEL + INTERVAL_H) + titleHeight)
+
+#define OTHER_BUTTON_X(N) ((N) * (OTHER_BTN_X_PIXEL + INTERVAL_V) + INTERVAL_V)
+#define OTHER_BUTTON_Y(N) ((N) * (OTHER_BTN_Y_PIXEL + INTERVAL_H) + titleHeight)
