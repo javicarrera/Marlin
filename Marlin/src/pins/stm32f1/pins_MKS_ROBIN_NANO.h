@@ -135,8 +135,40 @@
 //
 // Power Supply Control
 //
-#define UPS //if connected MKS PWC & UPS, UPS signal cable is not connected to main board
-#define MKSPWC //only for LVGL_UI
+
+#if ENABLED(PSU_CONTROL)                          // MKSPWC
+  #if HAS_TFT_LVGL_UI
+    #error "PSU_CONTROL cannot be used with TFT_LVGL_UI. Disable PSU_CONTROL to continue."
+  #endif
+  #ifndef PS_ON_PIN
+    #define PS_ON_PIN                       PB2   // PW_OFF
+  #endif
+  #ifndef KILL_PIN
+    #define KILL_PIN                        PA2   // PW_DET 
+    #define KILL_PIN_STATE                 HIGH
+  #endif  
+  #ifdef BACKUP_POWER_SUPPLY 
+    #define POWER_LOSS_PIN             KILL_PIN   // PW_DET ALLOWS TO USE MKS PWC & UPS TOGETHER - DO NOT PLUG UPS SIGNAL CABLE TO MAIN BOARD
+  #endif    
+#else
+  #ifndef SUICIDE_PIN
+    #define SUICIDE_PIN                     PB2   // LVGL UI MKSPWC SUICIDE PIN PB2 - PW_OFF
+    #define SUICIDE_PIN_INVERTING           false   // LVGL UI MKSPWC PIN STATE
+  #endif
+  #ifndef KILL_PIN
+    #define KILL_PIN                        PA2   // LVGL UI MKSPWC PW_DET PIN
+    #define KILL_PIN_STATE                 HIGH   // LVGL UI MKSPWC PIN STATE       
+  #endif  
+  #ifdef BACKUP_POWER_SUPPLY 
+    #ifndef POWER_LOSS_PIN
+      #define POWER_LOSS_PIN           KILL_PIN   // ALLOWS USING BOTH MKS PWC & UPS TOGETHER - DO NOT PLUG UPS SIGNAL CABLE TO MAIN BOARD
+    #endif 
+  #endif 
+#endif
+
+//
+// Screen calibration
+//
 
 #if HAS_TFT_LVGL_UI
 
