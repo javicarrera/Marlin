@@ -120,8 +120,8 @@
 #define HEATER_3_PIN                           9
 #define HEATER_BED_PIN                         2
 
-#ifndef FAN_PIN
-  #define FAN_PIN                              6
+#ifndef FAN0_PIN
+  #define FAN0_PIN                             6
 #endif
 #define FAN2_PIN                               5
 
@@ -137,13 +137,13 @@
 // SPI Buses
 //
 
-#define DAC0_SYNC                             53  // PB14
+#define DAC0_SYNC_PIN                         53  // PB14
 #define SPI_CHAN_DAC                           1
 
 #define SPI_CHAN_EEPROM1                      -1
-#define SPI_EEPROM1_CS                        -1
-#define SPI_EEPROM2_CS                        -1
-#define SPI_FLASH_CS                          -1
+#define SPI_EEPROM1_CS_PIN                    -1
+#define SPI_EEPROM2_CS_PIN                    -1
+#define SPI_FLASH_CS_PIN                      -1
 
 #define SD_SCK_PIN                            76
 #define SD_MISO_PIN                           74
@@ -153,7 +153,7 @@
 #define TEMP_0_CS_PIN                         65
 #define TEMP_1_CS_PIN                         52
 #define TEMP_2_CS_PIN                         50
-#define TEMP_3_CS_PIN                         51
+#define TEMP_3_CS_PIN                         51  // Not yet supported
 
 #define ENC424_SS                             61
 
@@ -166,7 +166,7 @@
 #if ENABLED(REPRAPWORLD_GRAPHICAL_LCD)
 
   #define LCD_PINS_RS                         A8  // CS chip select / SS chip slave select
-  #define LCD_PINS_ENABLE                   MOSI  // SID (MOSI)
+  #define LCD_PINS_EN                       MOSI  // SID (MOSI)
   #define LCD_PINS_D4                        SCK  // SCK (CLK) clock
 
   #define BTN_EN1                             20

@@ -23,6 +23,8 @@
 
 /**
  * Re-ARM with RAMPS v1.4 pin assignments
+ * Schematic: https://green-candy.osdn.jp/external/MarlinFW/board_schematics/Re-ARM%20RAMPS%201.4/Re_ARM_Schematic.pdf
+ * Origin: https://reprap.org/mediawiki/images/f/fa/Re_ARM_Schematic.pdf
  *
  * Applies to the following boards:
  *
@@ -97,18 +99,16 @@
 #endif
 
 //
-// Software SPI pins for TMC2130 stepper drivers
+// Default pins for TMC software SPI
 //
-#if ENABLED(TMC_USE_SW_SPI)
-  #ifndef TMC_SW_MOSI
-    #define TMC_SW_MOSI                    P1_00  // ETH
-  #endif
-  #ifndef TMC_SW_MISO
-    #define TMC_SW_MISO                    P1_08  // ETH
-  #endif
-  #ifndef TMC_SW_SCK
-    #define TMC_SW_SCK                     P1_09  // ETH
-  #endif
+#ifndef TMC_SPI_MOSI
+  #define TMC_SPI_MOSI                     P1_00  // ETH
+#endif
+#ifndef TMC_SPI_MISO
+  #define TMC_SPI_MISO                     P1_08  // ETH
+#endif
+#ifndef TMC_SPI_SCK
+  #define TMC_SPI_SCK                      P1_09  // ETH
 #endif
 
 #if HAS_TMC_UART
@@ -119,10 +119,6 @@
    * If undefined software serial is used according to the pins below
    */
 
-  //
-  // Software serial
-  //
-
   // P2_08 E1-Step
   // P2_13 E1-Dir
 
@@ -130,33 +126,36 @@
     #define X_SERIAL_TX_PIN                P0_01
   #endif
   #ifndef X_SERIAL_RX_PIN
-    #define X_SERIAL_RX_PIN                P0_01
+    #define X_SERIAL_RX_PIN      X_SERIAL_TX_PIN
   #endif
 
   #ifndef Y_SERIAL_TX_PIN
     #define Y_SERIAL_TX_PIN                P0_00
   #endif
   #ifndef Y_SERIAL_RX_PIN
-    #define Y_SERIAL_RX_PIN                P0_00
+    #define Y_SERIAL_RX_PIN      Y_SERIAL_TX_PIN
   #endif
 
   #ifndef Z_SERIAL_TX_PIN
     #define Z_SERIAL_TX_PIN                P2_13
   #endif
   #ifndef Z_SERIAL_RX_PIN
-    #define Z_SERIAL_RX_PIN                P2_13
+    #define Z_SERIAL_RX_PIN      Z_SERIAL_TX_PIN
   #endif
 
   #ifndef E0_SERIAL_TX_PIN
     #define E0_SERIAL_TX_PIN               P2_08
   #endif
   #ifndef E0_SERIAL_RX_PIN
-    #define E0_SERIAL_RX_PIN               P2_08
+    #define E0_SERIAL_RX_PIN    E0_SERIAL_TX_PIN
   #endif
 
   // Reduce baud rate to improve software serial reliability
-  #define TMC_BAUD_RATE                    19200
-#endif
+  #ifndef TMC_BAUD_RATE
+    #define TMC_BAUD_RATE                  19200
+  #endif
+
+#endif // HAS_TMC_UART
 
 //
 // Temperature Sensors
@@ -172,51 +171,34 @@
 #define FILWIDTH_PIN                    P0_02_A7  // A7 - ( 1)  - TXD0 - J4-5 & AUX-1
 
 //
-// Augmentation for auto-assigning RAMPS plugs
-//
-#if NONE(IS_RAMPS_EEB, IS_RAMPS_EEF, IS_RAMPS_EFB, IS_RAMPS_EFF, IS_RAMPS_SF) && !PIN_EXISTS(MOSFET_D)
-  #if HAS_MULTI_HOTEND
-    #if TEMP_SENSOR_BED
-      #define IS_RAMPS_EEB
-    #else
-      #define IS_RAMPS_EEF
-    #endif
-  #elif TEMP_SENSOR_BED
-    #define IS_RAMPS_EFB
-  #else
-    #define IS_RAMPS_EFF
-  #endif
-#endif
-
-//
 // Heaters / Fans
 //
+#ifndef MOSFET_A_PIN
+  #define MOSFET_A_PIN                     P2_05
+#endif
+#ifndef MOSFET_B_PIN
+  #define MOSFET_B_PIN                     P2_04
+#endif
+#ifndef MOSFET_C_PIN
+  #define MOSFET_C_PIN                     P2_07
+#endif
 #ifndef MOSFET_D_PIN
   #define MOSFET_D_PIN                     -1
 #endif
-#ifndef RAMPS_D8_PIN
-  #define RAMPS_D8_PIN                     P2_07  // (8)
-#endif
-#ifndef RAMPS_D9_PIN
-  #define RAMPS_D9_PIN                     P2_04  // (9)
-#endif
-#ifndef RAMPS_D10_PIN
-  #define RAMPS_D10_PIN                    P2_05  // (10)
-#endif
 
-#define HEATER_0_PIN               RAMPS_D10_PIN
+#define HEATER_0_PIN                MOSFET_A_PIN
 
-#if ENABLED(IS_RAMPS_EFB)                         // Hotend, Fan, Bed
-  #define HEATER_BED_PIN            RAMPS_D8_PIN
-#elif ENABLED(IS_RAMPS_EEF)                       // Hotend, Hotend, Fan
-  #define HEATER_1_PIN              RAMPS_D9_PIN
-#elif ENABLED(IS_RAMPS_EEB)                       // Hotend, Hotend, Bed
-  #define HEATER_1_PIN              RAMPS_D9_PIN
-  #define HEATER_BED_PIN            RAMPS_D8_PIN
-#elif ENABLED(IS_RAMPS_EFF)                       // Hotend, Fan, Fan
-  #define FAN1_PIN                  RAMPS_D8_PIN
-#elif DISABLED(IS_RAMPS_SF)                       // Not Spindle, Fan (i.e., "EFBF" or "EFBE")
-  #define HEATER_BED_PIN            RAMPS_D8_PIN
+#if FET_ORDER_EFB                                 // Hotend, Fan, Bed
+  #define HEATER_BED_PIN            MOSFET_C_PIN
+#elif FET_ORDER_EEF                               // Hotend, Hotend, Fan
+  #define HEATER_1_PIN              MOSFET_B_PIN
+#elif FET_ORDER_EEB                               // Hotend, Hotend, Bed
+  #define HEATER_1_PIN              MOSFET_B_PIN
+  #define HEATER_BED_PIN            MOSFET_C_PIN
+#elif FET_ORDER_EFF                               // Hotend, Fan, Fan
+  #define FAN1_PIN                  MOSFET_C_PIN
+#elif DISABLED(FET_ORDER_SF)                      // Not Spindle, Fan (i.e., "EFBF" or "EFBE")
+  #define HEATER_BED_PIN            MOSFET_C_PIN
   #if HOTENDS == 1 && DISABLED(HEATERS_PARALLEL)
     #define FAN1_PIN                MOSFET_D_PIN
   #else
@@ -224,15 +206,15 @@
   #endif
 #endif
 
-#ifndef FAN_PIN
-  #if EITHER(IS_RAMPS_EFB, IS_RAMPS_EFF)          // Hotend, Fan, Bed or Hotend, Fan, Fan
-    #define FAN_PIN                 RAMPS_D9_PIN
-  #elif EITHER(IS_RAMPS_EEF, IS_RAMPS_SF)         // Hotend, Hotend, Fan or Spindle, Fan
-    #define FAN_PIN                 RAMPS_D8_PIN
-  #elif ENABLED(IS_RAMPS_EEB)                     // Hotend, Hotend, Bed
-    #define FAN_PIN                        P1_18  // (4) IO pin. Buffer needed
+#ifndef FAN0_PIN
+  #if ANY(FET_ORDER_EFB, FET_ORDER_EFF)           // Hotend, Fan, Bed or Hotend, Fan, Fan
+    #define FAN0_PIN                MOSFET_B_PIN
+  #elif ANY(FET_ORDER_EEF, FET_ORDER_SF)          // Hotend, Hotend, Fan or Spindle, Fan
+    #define FAN0_PIN                MOSFET_C_PIN
+  #elif FET_ORDER_EEB                             // Hotend, Hotend, Bed
+    #define FAN0_PIN                       P1_18  // (4) IO pin. Buffer needed
   #else                                           // Non-specific are "EFB" (i.e., "EFBF" or "EFBE")
-    #define FAN_PIN                 RAMPS_D9_PIN
+    #define FAN0_PIN                MOSFET_B_PIN
   #endif
 #endif
 
@@ -248,7 +230,7 @@
 
 #define PS_ON_PIN                          P2_12  // (12)
 
-#if !defined(TEMP_0_CS_PIN) && DISABLED(USE_ZMAX_PLUG)
+#if !defined(TEMP_0_CS_PIN) && !(HAS_Z_AXIS && Z_HOME_DIR)
   #define TEMP_0_CS_PIN                    P1_28
 #endif
 
@@ -270,19 +252,21 @@
       #error "LASER_FEATURE requires 3 free servo pins."
     #endif
   #endif
-  #define SPINDLE_LASER_ENA_PIN       SERVO1_PIN  // (6) Pin should have a pullup/pulldown!
   #define SPINDLE_LASER_PWM_PIN       SERVO3_PIN  // (4) MUST BE HARDWARE PWM
+  #define SPINDLE_LASER_ENA_PIN       SERVO1_PIN  // (6) Pin should have a pullup/pulldown!
   #define SPINDLE_DIR_PIN             SERVO2_PIN  // (5)
 #endif
 
 //
 // Průša i3 MK2 Multiplexer Support
 //
-#if SERIAL_PORT != 0 && SERIAL_PORT_2 != 0
-  #define E_MUX0_PIN                       P0_03  // ( 0) Z_CS_PIN
-  #define E_MUX1_PIN                       P0_02  // ( 1) E0_CS_PIN
+#if HAS_PRUSA_MMU1
+  #if SERIAL_PORT != 0 && SERIAL_PORT_2 != 0
+    #define E_MUX0_PIN                     P0_03  // ( 0) Z_CS_PIN
+    #define E_MUX1_PIN                     P0_02  // ( 1) E0_CS_PIN
+  #endif
+  #define E_MUX2_PIN                       P0_26  // (63) E1_CS_PIN
 #endif
-#define E_MUX2_PIN                         P0_26  // (63) E1_CS_PIN
 
 /**
  * LCD / Controller
@@ -320,12 +304,14 @@
   #define BTN_ENC                          P3_25  // J3-4 & AUX-4
 
   #define LCD_PINS_RS                      P0_15  // J3-9 & AUX-4 (CS)
-  #define LCD_PINS_ENABLE                  P0_18  // J3-10 & AUX-3 (SID, MOSI)
+  #define LCD_PINS_EN                      P0_18  // J3-10 & AUX-3 (SID, MOSI)
   #define LCD_PINS_D4                      P2_06  // J3-8 & AUX-3 (SCK, CLK)
 
 #elif ENABLED(ZONESTAR_LCD)
 
-  #error "CAUTION! ZONESTAR_LCD on REARM requires wiring modifications. NB. ADCs are not 5V tolerant. Comment out this line to continue."
+  #ifndef NO_CONTROLLER_CUSTOM_WIRING_WARNING
+    #error "CAUTION! ZONESTAR_LCD on REARM requires wiring modifications. NB. ADCs are not 5V tolerant. See 'pins_RAMPS_RE_ARM.h' for details. (Define NO_CONTROLLER_CUSTOM_WIRING_WARNING to suppress this warning.)"
+  #endif
 
 #elif IS_TFTGLCD_PANEL
 
@@ -368,15 +354,15 @@
   #endif
 
   #if ANY(VIKI2, miniVIKI)
-    //#define LCD_SCREEN_ROT_180
-
     #define DOGLCD_CS                      P0_16  // (16)
     #define DOGLCD_A0                      P2_06  // (59) J3-8 & AUX-2
-    #define DOGLCD_SCK                SD_SCK_PIN
-    #define DOGLCD_MOSI              SD_MOSI_PIN
+    #define DOGLCD_SCK                     P0_15  // (52) (SCK)  J3-9 & AUX-3
+    #define DOGLCD_MOSI                    P0_18  // (51) (MOSI) J3-10 & AUX-3
 
     #define STAT_LED_BLUE_PIN              P0_26  // (63)  may change if cable changes
     #define STAT_LED_RED_PIN               P1_21  // ( 6)  may change if cable changes
+
+    //#define LCD_SCREEN_ROTATE              180  // 0, 90, 180, 270
 
   #else
 
@@ -392,7 +378,7 @@
 
       #define LCD_RESET_PIN                P0_16  // Must be high or open for LCD to operate normally.
 
-      #if EITHER(FYSETC_MINI_12864_1_2, FYSETC_MINI_12864_2_0)
+      #if ANY(FYSETC_MINI_12864_1_2, FYSETC_MINI_12864_2_0)
         #ifndef RGB_LED_R_PIN
           #define RGB_LED_R_PIN            P1_00
         #endif
@@ -411,7 +397,7 @@
     #endif
 
     #define LCD_BACKLIGHT_PIN              P0_16  //(16) J3-7 & AUX-4 - only used on DOGLCD controllers
-    #define LCD_PINS_ENABLE                P0_18  // (51) (MOSI) J3-10 & AUX-3
+    #define LCD_PINS_EN                    P0_18  // (51) (MOSI) J3-10 & AUX-3
     #define LCD_PINS_D4                    P0_15  // (52) (SCK)  J3-9 & AUX-3
     #if IS_ULTIPANEL
       #define LCD_PINS_D5                  P1_17  // (71) ENET_MDIO
@@ -426,11 +412,7 @@
   #endif
 
   #if ENABLED(MINIPANEL)
-    // GLCD features
-    // Uncomment screen orientation
-    //#define LCD_SCREEN_ROT_90
-    //#define LCD_SCREEN_ROT_180
-    //#define LCD_SCREEN_ROT_270
+    //#define LCD_SCREEN_ROTATE              180  // 0, 90, 180, 270
  #endif
 
 #endif // HAS_WIRED_LCD
@@ -458,8 +440,6 @@
   #define SDCARD_CONNECTION              ONBOARD
 #endif
 
-#define ONBOARD_SD_CS_PIN                  P0_06  // Chip select for "System" SD card
-
 #if SD_CONNECTION_IS(LCD)
   #define SD_SCK_PIN                       P0_15  // (52)  system defined J3-9 & AUX-3
   #define SD_MISO_PIN                      P0_17  // (50)  system defined J3-10 & AUX-3
@@ -470,6 +450,7 @@
   #define SD_SCK_PIN                       P0_07
   #define SD_MISO_PIN                      P0_08
   #define SD_MOSI_PIN                      P0_09
+  #define ONBOARD_SD_CS_PIN                P0_06  // Chip select for "System" SD card
   #define SD_SS_PIN            ONBOARD_SD_CS_PIN
 #elif SD_CONNECTION_IS(CUSTOM_CABLE)
   #error "No custom SD drive cable defined for this board."
@@ -488,14 +469,14 @@
  *  All Fast PWMs have a 50Hz rate.
  *
  *  The following pins/signals use the direct method. All other pins use the
- *  the interrupt method. Note that SERVO2_PIN and RAMPS_D8_PIN use the
+ *  the interrupt method. Note that SERVO2_PIN and MOSFET_C_PIN use the
  *  interrupt method.
  *
  *     P1_20 (11)   SERVO0_PIN
  *     P1_21 ( 6)   SERVO1_PIN       J5-1
  *     P0_18 ( 4)   SERVO3_PIN       5V output
- *    *P2_04 ( 9)   RAMPS_D9_PIN
- *    *P2_05 (10)   RAMPS_D10_PIN
+ *    *P2_04 ( 9)   MOSFET_B_PIN
+ *    *P2_05 (10)   MOSFET_A_PIN
  *
  *    * - If used as a heater driver then a Fast PWM is NOT assigned. If used as
  *        a fan driver then enabling FAST_PWM_FAN assigns a Fast PWM to it.

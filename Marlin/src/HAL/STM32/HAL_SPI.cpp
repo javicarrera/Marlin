@@ -20,7 +20,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-#if defined(ARDUINO_ARCH_STM32) && !defined(STM32GENERIC) && !defined(MAPLE_STM32F1)
+#include "../platforms.h"
+
+#ifdef HAL_STM32
 
 #include "../../inc/MarlinConfig.h"
 
@@ -45,7 +47,9 @@ static SPISettings spiConfig;
   #include "../shared/Delay.h"
 
   void spiBegin(void) {
-    OUT_WRITE(SD_SS_PIN, HIGH);
+    #if PIN_EXISTS(SD_SS)
+      OUT_WRITE(SD_SS_PIN, HIGH);
+    #endif
     OUT_WRITE(SD_SCK_PIN, HIGH);
     SET_INPUT(SD_MISO_PIN);
     OUT_WRITE(SD_MOSI_PIN, HIGH);
@@ -74,7 +78,6 @@ static SPISettings spiConfig;
       case SPI_SPEED_6:      delaySPIFunc = &delaySPI_2000; break;  // desired:   250,000  actual: ~210K
       default:               delaySPIFunc = &delaySPI_4000; break;  // desired:   125,000  actual: ~123K
     }
-    SPI.begin();
   }
 
   // Begin SPI transaction, set clock, bit order, data mode
@@ -98,9 +101,9 @@ static SPISettings spiConfig;
 
   // Soft SPI receive byte
   uint8_t spiRec() {
-    DISABLE_ISRS();                                               // No interrupts during byte receive
+    hal.isr_off();                                                // No interrupts during byte receive
     const uint8_t data = HAL_SPI_STM32_SpiTransfer_Mode_3(0xFF);
-    ENABLE_ISRS();                                                // Enable interrupts
+    hal.isr_on();                                                 // Enable interrupts
     return data;
   }
 
@@ -112,9 +115,9 @@ static SPISettings spiConfig;
 
   // Soft SPI send byte
   void spiSend(uint8_t data) {
-    DISABLE_ISRS();                         // No interrupts during byte send
+    hal.isr_off();                          // No interrupts during byte send
     HAL_SPI_STM32_SpiTransfer_Mode_3(data); // Don't care what is received
-    ENABLE_ISRS();                          // Enable interrupts
+    hal.isr_on();                           // Enable interrupts
   }
 
   // Soft SPI send block
@@ -224,4 +227,4 @@ static SPISettings spiConfig;
 
 #endif // SOFTWARE_SPI
 
-#endif // ARDUINO_ARCH_STM32 && !STM32GENERIC && !MAPLE_STM32F1
+#endif // HAL_STM32

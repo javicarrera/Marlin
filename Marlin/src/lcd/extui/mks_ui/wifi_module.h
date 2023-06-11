@@ -22,7 +22,7 @@
 #pragma once
 
 #ifdef __cplusplus
-  extern "C" { /* C-declarations for C++ */
+  extern "C" {
 #endif
 
 #include "../../../inc/MarlinConfigPre.h"
@@ -56,7 +56,7 @@
 
 #define UDISKBUFLEN           1024
 
-typedef enum{
+typedef enum {
   udisk_buf_empty = 0,
   udisk_buf_full,
 } UDISK_DATA_BUFFER_STATE;
@@ -74,41 +74,41 @@ typedef struct {
 
 typedef struct {
   uint8_t flag; // 0x0: no error;  0x01: error
-  uint32_t start_tick; //error start time
+  uint32_t start_tick; // error start time
   uint32_t now_tick;
 } WIFI_TRANS_ERROR;
 
 extern volatile WIFI_TRANS_ERROR wifiTransError;
 
 typedef struct {
-  char ap_name[32];   //wifi-name
-  char keyCode[64]; //wifi password
-  int  decodeType;
-  int  baud;
-  int  mode;
+  char ap_name[32];   // wifi-name
+  char keyCode[64]; // wifi password
+  int decodeType;
+  int baud;
+  int mode;
 } WIFI_PARA;
 
 typedef struct {
   char state;
   char hostUrl[96];
-  int  port;
+  int port;
   char id[21];
 } CLOUD_PARA;
 
 typedef struct {
-  char  dhcp_flag;
-  char  ip_addr[16];
-  char  mask[16];
-  char  gate[16];
-  char  dns[16];
+  char dhcp_flag;
+  char ip_addr[16];
+  char mask[16];
+  char gate[16];
+  char dns[16];
 
-  char  dhcpd_flag;
-  char  dhcpd_ip[16];
-  char  dhcpd_mask[16];
-  char  dhcpd_gate[16];
-  char  dhcpd_dns[16];
-  char  start_ip_addr[16];
-  char  end_ip_addr[16];
+  char dhcpd_flag;
+  char dhcpd_ip[16];
+  char dhcpd_mask[16];
+  char dhcpd_gate[16];
+  char dhcpd_dns[16];
+  char start_ip_addr[16];
+  char end_ip_addr[16];
 } IP_PARA;
 
 typedef enum {
@@ -137,15 +137,15 @@ typedef enum {
 
 typedef enum {
   TRANSFER_IDLE,
-  TRANSFERING,
+  TRANSFERRING,
   TRANSFER_STORE,
 } TRANSFER_STATE;
 extern volatile TRANSFER_STATE esp_state;
 
 typedef struct {
   char buf[20][80];
-  int  rd_index;
-  int  wt_index;
+  int rd_index;
+  int wt_index;
 } QUEUE;
 
 typedef enum {
@@ -163,8 +163,8 @@ typedef struct {
   //uint8_t uartTxBuffer[UART_FIFO_BUFFER_SIZE];
 } SZ_USART_FIFO;
 
-#define WIFI_GCODE_BUFFER_LEAST_SIZE    96
-#define WIFI_GCODE_BUFFER_SIZE  (WIFI_GCODE_BUFFER_LEAST_SIZE * 3)
+#define WIFI_GCODE_BUFFER_LEAST_SIZE 96
+#define WIFI_GCODE_BUFFER_SIZE (WIFI_GCODE_BUFFER_LEAST_SIZE * 3)
 typedef struct {
   uint8_t wait_tick;
   uint8_t Buffer[WIFI_GCODE_BUFFER_SIZE];
@@ -179,14 +179,14 @@ extern CLOUD_PARA cloud_para;
 
 extern WIFI_GCODE_BUFFER espGcodeFifo;
 
-uint32_t getWifiTick();
-uint32_t getWifiTickDiff(int32_t lastTick, int32_t curTick);
+millis_t getWifiTick();
+millis_t getWifiTickDiff(const millis_t lastTick, const millis_t curTick);
 
 void mks_esp_wifi_init();
 extern int cfg_cloud_flag;
-int send_to_wifi(uint8_t *buf, int len);
+int send_to_wifi(uint8_t * const buf, const int len);
 void wifi_looping();
-int raw_send_to_wifi(uint8_t *buf, int len);
+int raw_send_to_wifi(uint8_t * const buf, const int len);
 int package_to_wifi(WIFI_RET_TYPE type, uint8_t *buf, int len);
 void get_wifi_list_command_send();
 void get_wifi_commands();

@@ -42,25 +42,25 @@
 #elif ENABLED(CR10_TFT_PINMAP)          // FYSETC S6 - STM32F4 - with TOUCH_UI_ULTIPANEL
 
   #define CLCD_USE_SOFT_SPI
-  #define CLCD_SOFT_SPI_SCLK             LCD_PINS_D4      // PORTA1               Pin 6
-  #define CLCD_SOFT_SPI_MOSI             LCD_PINS_ENABLE  // PORTC1               Pin 8
-  #define CLCD_SPI_CS                    LCD_PINS_RS      // PORTA3               Pin 7
-  #define CLCD_SOFT_SPI_MISO             16               // PORTC0   BTN_ENC     Pin 2
-  #define CLCD_MOD_RESET                 11               // PORTD3   BTN_EN1     Pin 3
-  #define CLCD_AUX_0                     10               // PORTD2   BTN_EN2     Pin 5
-  #define CLCD_AUX_1                     BEEPER_PIN       // PORTA4               Pin 1
+  #define CLCD_SOFT_SPI_SCLK             LCD_PINS_D4  // PORTA1               Pin 6
+  #define CLCD_SOFT_SPI_MOSI             LCD_PINS_EN  // PORTC1               Pin 8
+  #define CLCD_SPI_CS                    LCD_PINS_RS  // PORTA3               Pin 7
+  #define CLCD_SOFT_SPI_MISO             16           // PORTC0   BTN_ENC     Pin 2
+  #define CLCD_MOD_RESET                 11           // PORTD3   BTN_EN1     Pin 3
+  #define CLCD_AUX_0                     10           // PORTD2   BTN_EN2     Pin 5
+  #define CLCD_AUX_1                     BEEPER_PIN   // PORTA4               Pin 1
 
 #elif ENABLED(AO_EXP1_DEPRECATED_PINMAP)
 
   /**
-   * This AlephObjects pinout re-purposes the UltraLCD
+   * This LulzBot pinout re-purposes the UltraLCD
    * connector EXP1 for Software SPI (rev B, obsolete)
    */
 
   #define CLCD_MOD_RESET                 LCD_PINS_D4
   #define CLCD_SPI_CS                    LCD_PINS_D5
 
-  #define CLCD_AUX_0                     LCD_PINS_ENABLE
+  #define CLCD_AUX_0                     LCD_PINS_EN
   #define CLCD_AUX_1                     BTN_ENC
   #define CLCD_AUX_2                     BEEPER_PIN
 
@@ -74,7 +74,7 @@
   /**
    * AO_EXP1_PINMAP with TOUCH_UI_ULTIPANEL
    *
-   * This AlephObjects mapping re-purposes the UltraLCD
+   * This LulzBot mapping re-purposes the UltraLCD
    * connector EXP1 for Software SPI for display (rev C):
    *
    *     EXP2:      FTDI:   SD -or- USB [1]:     ULTRA_LCD:
@@ -93,7 +93,7 @@
    *         functionality over software SPI.
    */
 
-  #define CLCD_MOD_RESET                 LCD_PINS_ENABLE
+  #define CLCD_MOD_RESET                 LCD_PINS_EN
   #define CLCD_SPI_CS                    LCD_PINS_D4
 
   #define CLCD_USE_SOFT_SPI
@@ -106,7 +106,7 @@
   /**
    * AO_EXP2_PINMAP with TOUCH_UI_ULTIPANEL
    *
-   * The AlephObjects mapping for re-purposing the UltraLCD
+   * The LulzBot mapping for re-purposing the UltraLCD
    * connector EXP2 for hardware SPI for display and SD card
    * or USB (rev C):
    *
@@ -123,12 +123,12 @@
    *     10         5V      5V      5V      -->  KILL [3]
    *
    * [1] This configuration allows daisy-chaining of the
-   *     display and SD/USB on EXP2, except for [2]
+   *     display and SD/FD on EXP2, except for [2]
    *
    * [2] The Ultimachine Einsy boards have a level shifter
    *     on MISO enabled by SD_CSEL chip select, hence it
    *     is not possible to run both the display and the
-   *     SD/USB on EXP2.
+   *     SD/FD on EXP2.
    *
    * [3] Archim Rambo provides 5V on this pin. On any other
    *     board, divert this wire from the ribbon cable and
@@ -137,7 +137,7 @@
 
   #define CLCD_SPI_CS                    BTN_EN1
   #define CLCD_MOD_RESET                 BTN_EN2
-  #if MB(EINSY_RAMBO, EINSY_RETRO) && DISABLED(SDSUPPORT)
+  #if MB(EINSY_RAMBO, EINSY_RETRO) && !HAS_MEDIA
     #define CLCD_SPI_EXTRA_CS            SDSS
   #endif
 

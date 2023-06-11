@@ -19,9 +19,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
+
 #include "../../../inc/MarlinConfigPre.h"
 
-#if BOTH(HAS_TFT_LVGL_UI, ADVANCED_PAUSE_FEATURE)
+#if ALL(HAS_TFT_LVGL_UI, ADVANCED_PAUSE_FEATURE)
 
 #include "draw_ui.h"
 #include <lv_conf.h>

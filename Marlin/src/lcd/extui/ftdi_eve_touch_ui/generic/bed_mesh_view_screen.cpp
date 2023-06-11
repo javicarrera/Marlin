@@ -125,7 +125,7 @@ void BedMeshViewScreen::onMeshUpdate(const int8_t x, const int8_t y, const ExtUI
       mydata.count = 0;
       break;
     case ExtUI::G29_FINISH:
-      if (mydata.count == GRID_MAX_POINTS && ExtUI::getMeshValid())
+      if (mydata.count == GRID_MAX_POINTS && ExtUI::getLevelingIsValid())
         mydata.message = GET_TEXT_F(MSG_BED_MAPPING_DONE);
       else
         mydata.message = GET_TEXT_F(MSG_BED_MAPPING_INCOMPLETE);
@@ -154,17 +154,11 @@ void BedMeshViewScreen::onMeshUpdate(const int8_t x, const int8_t y, const ExtUI
 void BedMeshViewScreen::doProbe() {
   GOTO_SCREEN(BedMeshViewScreen);
   mydata.count = 0;
-  injectCommands_P(PSTR(BED_LEVELING_COMMANDS));
-}
-
-void BedMeshViewScreen::doMeshValidation() {
-  mydata.count = 0;
-  GOTO_SCREEN(StatusScreen);
-  injectCommands_P(PSTR("G28\nM117 Heating...\nG26 R X0 Y0\nG27"));
+  injectCommands(F(BED_LEVELING_COMMANDS));
 }
 
 void BedMeshViewScreen::show() {
-  injectCommands_P(PSTR("G29 L1"));
+  injectCommands(F("G29 L1"));
   GOTO_SCREEN(BedMeshViewScreen);
 }
 
