@@ -81,7 +81,7 @@
 
 // JAVI 3 for WIFI
 // JAVI 0 for TFT Serial (BTT TFT24)
-// JAVI -1 for USB CDC Serial (form SKR 1.4)
+// JAVI -1 for USB CDC Serial (from SKR 1.4)
 
 #define SERIAL_PORT 0
 
@@ -105,7 +105,7 @@
  * Currently Ethernet (-2) is only supported on Teensy 4.1 boards.
  * :[-2, -1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
-#define SERIAL_PORT_2 3 //JAVI
+//#define SERIAL_PORT_2 3 //JAVI
 //#define BAUDRATE_2 250000   // :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000] Enable to override BAUDRATE
 
 /**
@@ -401,7 +401,7 @@
 #if ENABLED(PSU_CONTROL)
   //#define MKS_PWC                 // Using the MKS PWC add-on
   //#define PS_OFF_CONFIRM          // Confirm dialog when power off
-  //#define PS_OFF_SOUND            // Beep 1s when power off
+  #define PS_OFF_SOUND            // Beep 1s when power off
   #define PSU_ACTIVE_STATE HIGH      // Set 'LOW' for ATX, 'HIGH' for X-Box
 
   //#define PSU_DEFAULT_OFF               // Keep power off until enabled directly with M80
@@ -421,7 +421,7 @@
     #define AUTO_POWER_CONTROLLERFAN
     #define AUTO_POWER_CHAMBER_FAN
     #define AUTO_POWER_COOLER_FAN
-    #define POWER_TIMEOUT              30 // (s) Turn off power if the machine is idle for this duration
+    #define POWER_TIMEOUT              300 // (s) Turn off power if the machine is idle for this duration
     //#define POWER_OFF_DELAY          60 // (s) Delay of poweroff after M81 command. Useful to let fans run for extra time.
   #endif
   #if ANY(AUTO_POWER_CONTROL, POWER_OFF_WAIT_FOR_COOLDOWN)
