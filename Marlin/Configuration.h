@@ -3473,7 +3473,7 @@
 #if ENABLED(NEOPIXEL_LED)
   #define NEOPIXEL_TYPE          NEO_GRB  // NEO_GRBW, NEO_RGBW, NEO_GRB, NEO_RBG, etc.
                                           // See https://github.com/adafruit/Adafruit_NeoPixel/blob/master/Adafruit_NeoPixel.h
-  //#define NEOPIXEL_PIN                4 // LED driving pin
+  #define NEOPIXEL_PIN              P1_25 // LED driving pin SKR 1.4 JAVI
   //#define NEOPIXEL2_TYPE  NEOPIXEL_TYPE
   //#define NEOPIXEL2_PIN               5
   #define NEOPIXEL_PIXELS              20 // Number of LEDs in the strip. (Longest strip when NEOPIXEL2_SEPARATE is disabled.)
@@ -3493,8 +3493,8 @@
   #endif
 
   // Use some of the NeoPixel LEDs for static (background) lighting
-  #define NEOPIXEL_BKGD_INDEX_FIRST   0 // Index of the first background LED
-  #define NEOPIXEL_BKGD_INDEX_LAST    5 // Index of the last background LED
+  #define NEOPIXEL_BKGD_INDEX_FIRST   7 // Index of the first background LED
+  #define NEOPIXEL_BKGD_INDEX_LAST    11 // Index of the last background LED
   #define NEOPIXEL_BKGD_COLOR         { 255, 255, 255, 0 }  // R, G, B, W
   #define NEOPIXEL_BKGD_TIMEOUT_COLOR {  25,  25,  25, 0 }  // R, G, B, W
   #define NEOPIXEL_BKGD_ALWAYS_ON       // Keep the backlight on when other NeoPixels are off
