@@ -1541,7 +1541,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { -7, 0, -4.1 }
+#define NOZZLE_TO_PROBE_OFFSET { 41, 0, -4.1 }
 //JAVI Calibrating Z-Offset With A BLTouch Bed Levelling Probe
 //G28 Home
 //M851 Z0 - Reset Z0Offset
