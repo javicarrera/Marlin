@@ -310,14 +310,8 @@ void unified_bed_leveling::G29() {
   // Check for commands that require the printer to be homed
   if (may_move) {
     planner.synchronize();
-    #if ALL(DWIN_LCD_PROUI, ZHOME_BEFORE_LEVELING)
-      save_ubl_active_state_and_disable();
-      gcode.process_subcommands_now(F("G28Z"));
-      restore_ubl_active_state_and_leave();
-    #else
-      // Send 'N' to force homing before G29 (internal only)
-      if (axes_should_home() || parser.seen_test('N')) gcode.home_all_axes();
-    #endif
+    // Send 'N' to force homing before G29 (internal only)
+    if (axes_should_home() || parser.seen_test('N')) gcode.home_all_axes();
     probe.use_probing_tool();
 
     // Position bed horizontally and Z probe vertically.

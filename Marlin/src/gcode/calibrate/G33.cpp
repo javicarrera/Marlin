@@ -638,26 +638,26 @@ void GcodeSuite::G33() {
             SERIAL_ECHOPGM("std dev:", p_float_t(zero_std_dev_min, 3));
           }
         SERIAL_EOL();
-
-        MString<20> msg(F("Calibration sd:"));
+        char mess[21];
+        strcpy_P(mess, PSTR("Calibration sd:"));
         if (zero_std_dev_min < 1)
-          msg.appendf(F("0.%03i"), (int)LROUND(zero_std_dev_min * 1000.0f));
+          sprintf_P(&mess[15], PSTR("0.%03i"), (int)LROUND(zero_std_dev_min * 1000.0f));
         else
-          msg.appendf(F("%03i.x"), (int)LROUND(zero_std_dev_min));
-        ui.set_status(msg);
+          sprintf_P(&mess[15], PSTR("%03i.x"), (int)LROUND(zero_std_dev_min));
+        ui.set_status(mess);
         print_calibration_settings(_endstop_results, _angle_results);
         SERIAL_ECHOLNPGM("Save with M500 and/or copy to Configuration.h");
       }
       else { // !end iterations
-        SString<14> msg;
+        char mess[15];
         if (iterations < 31)
-          msg.setf(F("Iteration : %02i"), (unsigned int)iterations);
+          sprintf_P(mess, PSTR("Iteration : %02i"), (unsigned int)iterations);
         else
-          msg.set(F("No convergence"));
-        msg.echo();
+          strcpy_P(mess, PSTR("No convergence"));
+        SERIAL_ECHO(mess);
         SERIAL_ECHO_SP(32);
         SERIAL_ECHOLNPGM("std dev:", p_float_t(zero_std_dev, 3));
-        ui.set_status(msg);
+        ui.set_status(mess);
         if (verbose_level > 1)
           print_calibration_settings(_endstop_results, _angle_results);
       }
@@ -667,12 +667,15 @@ void GcodeSuite::G33() {
       SERIAL_ECHO(enddryrun);
       SERIAL_ECHO_SP(35);
       SERIAL_ECHOLNPGM("std dev:", p_float_t(zero_std_dev, 3));
-      MString<30> msg(enddryrun, F(" sd:"));
+
+      char mess[21];
+      strcpy_P(mess, FTOP(enddryrun));
+      strcpy_P(&mess[11], PSTR(" sd:"));
       if (zero_std_dev < 1)
-        msg.appendf(F("0.%03i"), (int)LROUND(zero_std_dev * 1000.0f));
+        sprintf_P(&mess[15], PSTR("0.%03i"), (int)LROUND(zero_std_dev * 1000.0f));
       else
-        msg.appendf(F("%03i.x"), (int)LROUND(zero_std_dev));
-      ui.set_status(msg);
+        sprintf_P(&mess[15], PSTR("%03i.x"), (int)LROUND(zero_std_dev));
+      ui.set_status(mess);
     }
     ac_home();
   }

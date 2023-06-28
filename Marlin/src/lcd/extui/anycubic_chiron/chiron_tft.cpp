@@ -103,7 +103,7 @@ void ChironTFT::startup() {
   injectCommands(AC_cmnd_enable_leveling);
 
   // startup tunes are defined in Tunes.h
-  playTune(TERN(AC_DEFAULT_STARTUP_TUNE, Anycubic_PowerOn, GB_PowerOn));
+  PlayTune(TERN(AC_DEFAULT_STARTUP_TUNE, Anycubic_PowerOn, GB_PowerOn));
 
   #if ACDEBUGLEVEL
     DEBUG_ECHOLNPGM("AC Debug Level ", ACDEBUGLEVEL);
@@ -191,7 +191,7 @@ void ChironTFT::filamentRunout()  {
   // 1 Signal filament out
   last_error = AC_error_filament_runout;
   tftSendLn(isPrintingFromMedia() ? AC_msg_filament_out_alert : AC_msg_filament_out_block);
-  playTune(FilamentOut);
+  PlayTune(FilamentOut);
 }
 
 void ChironTFT::confirmationRequest(const char * const msg)  {
@@ -214,7 +214,7 @@ void ChironTFT::confirmationRequest(const char * const msg)  {
       if (strcmp_P(msg, MARLIN_msg_heater_timeout) == 0) {
         pause_state = AC_paused_heater_timed_out;
         tftSendLn(AC_msg_paused); // enable continue button
-        playTune(HeaterTimeout);
+        PlayTune(HeaterTimeout);
       }
       // Reheat finished, send acknowledgement
       else if (strcmp_P(msg, MARLIN_msg_reheat_done) == 0) {
@@ -252,7 +252,7 @@ void ChironTFT::statusChange(const char * const msg)  {
       }
       // If probing fails don't save the mesh raise the probe above the bad point
       if (strcmp_P(msg, MARLIN_msg_probing_failed) == 0) {
-        playTune(BeepBeepBeeep);
+        PlayTune(BeepBeepBeeep);
         injectCommands(F("G1 Z50 F500"));
         tftSendLn(AC_msg_probing_complete);
         printer_state = AC_printer_idle;
@@ -306,7 +306,7 @@ void ChironTFT::statusChange(const char * const msg)  {
 void ChironTFT::powerLossRecovery()  {
   printer_state = AC_printer_resuming_from_power_outage; // Play tune to notify user we can recover.
   last_error = AC_error_powerloss;
-  playTune(SOS);
+  PlayTune(SOS);
   SERIAL_ECHOLN(AC_msg_powerloss_recovery);
 }
 
