@@ -83,7 +83,7 @@
 // JAVI 0 for TFT Serial (BTT TFT24)
 // JAVI -1 for USB CDC Serial (from SKR 1.4)
 
-#define SERIAL_PORT -1 //JAVI
+#define SERIAL_PORT 0 //JAVI
 
 /**
  * Serial Port Baud Rate
@@ -105,7 +105,7 @@
  * Currently Ethernet (-2) is only supported on Teensy 4.1 boards.
  * :[-2, -1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
-#define SERIAL_PORT_2 0 //JAVI
+#define SERIAL_PORT_2 -1 //JAVI
 #define BAUDRATE_2 115200   // JAVI :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000] Enable to override BAUDRATE
 
 /**
@@ -1537,7 +1537,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { -7, 0, -4.1 }
+#define NOZZLE_TO_PROBE_OFFSET { 41, 0, -4.1 }
 //JAVI Calibrating Z-Offset With A BLTouch Bed Levelling Probe
 //G28 Home
 //M851 Z0 - Reset Z0Offset
