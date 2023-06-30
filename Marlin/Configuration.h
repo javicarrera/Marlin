@@ -1537,7 +1537,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { 38, 0, -4.1 }
+#define NOZZLE_TO_PROBE_OFFSET { 38, 0, -1.7 }
 //JAVI Calibrating Z-Offset With A BLTouch Bed Levelling Probe
 //G28 Home
 //M851 Z0 - Reset Z0Offset
@@ -1559,7 +1559,7 @@
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
-#define PROBING_MARGIN 5
+#define PROBING_MARGIN 15
 
 // X and Y axis travel speed (mm/min) between probes
 #define XY_PROBE_FEEDRATE (133*60)
