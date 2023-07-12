@@ -743,16 +743,10 @@ enum StealthIndex : uint8_t {
     pwmconf.pwm_grad = 14;
     pwmconf.pwm_ofs = 36;
     st.PWMCONF(pwmconf.sr);
-
-    // Set more conservative short detection settings
-    st.shortfilter(3); // 3us SHORT filter
-    st.s2vs_level(15); // Lowest sensitivity short to supply voltage protection
-    st.s2g_level(15); // Lowest sensitivity short to ground protection
-    st.shortdelay(1); // 1.5us instead of 0.75us short delay
-    
+ 
     // Disable short protection entirely
-    //st.diss2g(true);
-    //st.diss2vs(true);
+    st.diss2g(true);
+    st.diss2vs(true);
 
     TERN(HYBRID_THRESHOLD, st.set_pwm_thrs(hyb_thrs), UNUSED(hyb_thrs));
 
