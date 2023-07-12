@@ -745,8 +745,8 @@ enum StealthIndex : uint8_t {
     st.PWMCONF(pwmconf.sr);
  
     // Disable short protection entirely
-    st.diss2g(true);
-    st.diss2vs(true);
+    //st.diss2g(true);
+    //st.diss2vs(true);
 
     TERN(HYBRID_THRESHOLD, st.set_pwm_thrs(hyb_thrs), UNUSED(hyb_thrs));
 
