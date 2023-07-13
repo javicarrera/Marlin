@@ -1537,7 +1537,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { 38, 0, -1.7 }
+#define NOZZLE_TO_PROBE_OFFSET { 40, -8, -1.7 }
 //JAVI Calibrating Z-Offset With A BLTouch Bed Levelling Probe
 //G28 Home
 //M851 Z0 - Reset Z0Offset
@@ -1749,7 +1749,7 @@
 #define Z_CLEARANCE_FOR_HOMING  4 // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
                                     // Be sure to have this much clearance over your Z_MAX_POS to prevent grinding.
 
-#define Z_AFTER_HOMING         5 // (mm) Height to move to after homing (if Z was homed)
+#define Z_AFTER_HOMING         4 // (mm) Height to move to after homing (if Z was homed)
 
 // Direction of endstops when homing; 1=MAX, -1=MIN
 // :[-1,1]
@@ -1766,12 +1766,12 @@
 // @section geometry
 
 // The size of the printable area
-#define X_BED_SIZE 149
-#define Y_BED_SIZE 140
+#define X_BED_SIZE 150
+#define Y_BED_SIZE 145
 
 // Travel limits (linear=mm, rotational=°) after homing, corresponding to endstop positions.
-#define X_MIN_POS -7
-#define Y_MIN_POS 0
+#define X_MIN_POS -4.3
+#define Y_MIN_POS 5 //JAVI -hay un "bache"
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
