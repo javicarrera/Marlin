@@ -104,7 +104,7 @@ namespace Language_es {
   LSTR MSG_MOVE_AXIS                      = _UxGT("Mover ejes");
   LSTR MSG_BED_LEVELING                   = _UxGT("Nivelando Cama");
   LSTR MSG_LEVEL_BED                      = _UxGT("Nivelar Cama");
-  LSTR MSG_BED_TRAMMING                   = _UxGT("Recorrido Cama");
+  LSTR MSG_BED_TRAMMING                   = _UxGT("Tramming Cama");
   LSTR MSG_NEXT_CORNER                    = _UxGT("Siguente Esquina");
   LSTR MSG_MESH_EDITOR                    = _UxGT("Editor Mallado");
   LSTR MSG_EDIT_MESH                      = _UxGT("Editar Mallado");
